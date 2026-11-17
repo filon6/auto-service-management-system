@@ -59,6 +59,7 @@
 			<scope>test</scope>
 		</dependency>
 
+
 		<!-- JDBC -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -94,7 +95,6 @@
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>3.2.0</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -110,15 +110,13 @@
 				<version>3.11.0</version>
 				<configuration>
 					<java>
-						<googleJavaFormat/>
 						<removeUnusedImports/>
+						<googleJavaFormat/>
 						<formatAnnotations/>
 					</java>
 				</configuration>
 			</plugin>
-
 		</plugins>
-
 	</build>
 
 </project>
