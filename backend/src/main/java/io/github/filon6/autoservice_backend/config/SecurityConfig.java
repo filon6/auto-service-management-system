@@ -31,7 +31,14 @@ public class SecurityConfig {
 
     http.authenticationProvider(provider)
         .authorizeHttpRequests(auth ->
-            auth.requestMatchers("/api/auth/login", "/api/auth/csrf", "/actuator/health")
+            auth.requestMatchers(
+                    "/swagger-ui.html",
+                    "/swagger-ui/**",
+                    "/v3/api-docs",
+                    "/v3/api-docs/**",
+                    "/api/auth/login",
+                    "/api/auth/csrf",
+                    "/actuator/health")
                 .permitAll()
                 .requestMatchers("/api/auth/me", "/api/auth/logout")
                 .authenticated()
