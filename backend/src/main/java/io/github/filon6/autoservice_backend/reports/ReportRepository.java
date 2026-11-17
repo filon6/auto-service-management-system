@@ -2,9 +2,12 @@ package io.github.filon6.autoservice_backend.reports;
 
 import io.github.filon6.autoservice_backend.reports.dto.CommonServicesReport;
 import io.github.filon6.autoservice_backend.reports.dto.ServiceCostReport;
+import io.github.filon6.autoservice_backend.reports.export.CsvTable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -68,5 +71,43 @@ public class ReportRepository {
 
   public String findMasterInfoJson(int masterId) {
     return jdbcTemplate.queryForObject("SELECT get_master_info(?)::text", String.class, masterId);
+  }
+
+  public CsvTable findExpensiveServicesForExport() {
+    return loadCsvTable("SELECT * FROM expensive_services");
+  }
+
+  public CsvTable findMastersIncomeForExport() {
+    return loadCsvTable("SELECT * FROM masters_income");
+  }
+
+  private CsvTable loadCsvTable(String sql) {
+    return jdbcTemplate.query(
+        sql,
+        (ResultSetExtractor<CsvTable>)
+            rs -> {
+              var metadata = rs.getMetaData();
+              int columnCount = metadata.getColumnCount();
+
+              List<String> columns = new ArrayList<>();
+
+              for (int i = 1; i <= columnCount; i++) {
+                columns.add(metadata.getColumnLabel(i));
+              }
+
+              List<List<Object>> rows = new ArrayList<>();
+
+              while (rs.next()) {
+                List<Object> row = new ArrayList<>();
+
+                for (int i = 1; i <= columnCount; i++) {
+                  row.add(rs.getObject(i));
+                }
+
+                rows.add(row);
+              }
+
+              return new CsvTable(columns, rows);
+            });
   }
 }
