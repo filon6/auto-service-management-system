@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+</head>
+<body>
+<h2>Вход в AutoService</h2>
+
+<form id="loginForm">
+    <input name="username" placeholder="Логин" required>
+    <input name="password" type="password"
+           placeholder="Пароль" required>
+    <button type="submit">Войти</button>
+</form>
+
+<p id="message"></p>
+
+<script>
+    document.getElementById("loginForm")
+        .addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const csrfResponse = await fetch("/api/auth/csrf");
+            const csrf = await csrfResponse.json();
+
+            const response = await fetch("/api/auth/login", {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    [csrf.headerName]: csrf.token
+                },
+                body: new URLSearchParams(
+                    new FormData(event.target)
+                )
+            });
+
+            if (response.status === 204) {
+                window.location.href = "/swagger-ui/index.html";
+            } else {
+                document.getElementById("message")
+                    .textContent = "Неверный логин или пароль";
+            }
+        });
+</script>
+</body>
+</html>

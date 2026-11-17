@@ -32,6 +32,7 @@ public class SecurityConfig {
     http.authenticationProvider(provider)
         .authorizeHttpRequests(auth ->
             auth.requestMatchers(
+                            "/login.html",
                     "/swagger-ui.html",
                     "/swagger-ui/**",
                     "/v3/api-docs",
@@ -51,10 +52,15 @@ public class SecurityConfig {
         .exceptionHandling(ex ->
             ex.authenticationEntryPoint((request, response, exception) -> response.sendError(401)))
         .formLogin(form ->
-            form.loginProcessingUrl("/api/auth/login")
-                .successHandler((request, response, authentication) -> response.setStatus(204))
-                .failureHandler((request, response, exception) -> response.sendError(401))
-                .permitAll())
+                form.loginPage("/login.html")
+                        .loginProcessingUrl("/api/auth/login")
+                        .successHandler(
+                                (request, response, authentication) ->
+                                        response.setStatus(204))
+                        .failureHandler(
+                                (request, response, exception) ->
+                                        response.sendError(401))
+                        .permitAll())
         .logout(logout ->
             logout
                 .logoutUrl("/api/auth/logout")
