@@ -1,12 +1,18 @@
 package io.github.filon6.autoservice_backend.reports;
 
 import io.github.filon6.autoservice_backend.reports.dto.CommonServicesReport;
+import io.github.filon6.autoservice_backend.reports.dto.RevenueByOriginReport;
 import io.github.filon6.autoservice_backend.reports.dto.ServiceCostReport;
+import io.github.filon6.autoservice_backend.reports.dto.TopMasterReport;
 import io.github.filon6.autoservice_backend.reports.export.CsvTable;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
@@ -109,5 +115,34 @@ public class ReportRepository {
 
               return new CsvTable(columns, rows);
             });
+  }
+
+  public RevenueByOriginReport findRevenueByOrigin(LocalDate startDate, LocalDate endDate) {
+
+    return jdbcTemplate.queryForObject(
+        "CALL get_revenue_by_origin(?::date, ?::date, NULL, NULL)",
+        (rs, rowNum) -> new RevenueByOriginReport(rs.getBigDecimal(1), rs.getBigDecimal(2)),
+        startDate == null ? null : Date.valueOf(startDate),
+        endDate == null ? null : Date.valueOf(endDate));
+  }
+
+  public List<TopMasterReport> findTopMasters(YearMonth month) {
+    jdbcTemplate.execute(
+        "CALL get_top_masters_by_month(?::date, 'top_masters_report'::refcursor)",
+        (PreparedStatementCallback<Void>)
+            statement -> {
+              statement.setDate(1, Date.valueOf(month.atDay(1)));
+              statement.execute();
+              return null;
+            });
+
+    return jdbcTemplate.query(
+        "FETCH ALL FROM top_masters_report",
+        (rs, rowNum) ->
+            new TopMasterReport(
+                rs.getInt("id"),
+                rs.getString("name"),
+                rs.getLong("works_count"),
+                rs.getLong("distinct_cars_count")));
   }
 }
