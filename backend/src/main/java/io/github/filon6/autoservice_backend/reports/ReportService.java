@@ -1,7 +1,11 @@
 package io.github.filon6.autoservice_backend.reports;
 
 import io.github.filon6.autoservice_backend.reports.dto.CommonServicesReport;
+import io.github.filon6.autoservice_backend.reports.dto.RevenueByOriginReport;
 import io.github.filon6.autoservice_backend.reports.dto.ServiceCostReport;
+import io.github.filon6.autoservice_backend.reports.dto.TopMasterReport;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -84,5 +88,18 @@ public class ReportService {
       throw new ResponseStatusException(
           HttpStatus.BAD_REQUEST, "Идентификатор должен быть положительным");
     }
+  }
+
+  public RevenueByOriginReport getRevenueByOrigin(LocalDate startDate, LocalDate endDate) {
+
+    if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Дата начала позже даты окончания");
+    }
+
+    return repository.findRevenueByOrigin(startDate, endDate);
+  }
+
+  public List<TopMasterReport> getTopMasters(YearMonth month) {
+    return repository.findTopMasters(month);
   }
 }

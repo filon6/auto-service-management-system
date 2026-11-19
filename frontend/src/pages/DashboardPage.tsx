@@ -130,9 +130,6 @@ export function DashboardPage() {
                         <CardTitle className="text-lg">
                             Последние выполненные работы
                         </CardTitle>
-                        <p className="mt-1 text-sm text-slate-500">
-                            Последние записи журнала обслуживания
-                        </p>
                     </div>
 
                     <Link
