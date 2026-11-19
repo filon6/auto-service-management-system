@@ -1,0 +1,153 @@
+
+:root {
+  font-family: Inter, system-ui, sans-serif;
+  color: #e8edf5;
+  background: #0f172a;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button, input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-page,
+.centered-message {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 410px;
+  padding: 36px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 20px;
+}
+
+.brand-mark {
+  width: 48px;
+  height: 48px;
+  background: #2563eb;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.auth-card h1 {
+  margin: 20px 0 4px;
+}
+
+.subtitle {
+  color: #94a3b8;
+  margin-bottom: 30px;
+}
+
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-card label {
+  font-size: 14px;
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 12px;
+  color: white;
+  background: #0f172a;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  outline: none;
+}
+
+.auth-card input:focus {
+  border-color: #60a5fa;
+}
+
+.primary-button,
+.secondary-button {
+  border-radius: 8px;
+  padding: 12px 18px;
+  border: none;
+}
+
+.primary-button {
+  margin-top: 12px;
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+}
+
+.secondary-button {
+  background: #334155;
+  color: white;
+}
+
+.error-message {
+  color: #fca5a5;
+  font-size: 14px;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 36px;
+  border-bottom: 1px solid #334155;
+}
+
+.dashboard-header h1 {
+  font-size: 20px;
+}
+
+.dashboard-content {
+  max-width: 1200px;
+  margin: auto;
+  padding: 48px 32px;
+}
+
+.dashboard-content > p {
+  color: #94a3b8;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.dashboard-card {
+  padding: 32px 24px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  font-weight: 600;
+}

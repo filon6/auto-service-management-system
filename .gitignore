@@ -75,3 +75,6 @@ temp/
 *.swp
 *.swo
 *~
+
+# Local secrets
+/backend/secrets.properties
